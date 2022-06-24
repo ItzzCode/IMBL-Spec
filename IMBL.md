@@ -3,12 +3,12 @@
 
 *This might change at any moment!*
 
-IMBL is a strongly typed imperative language aiming for easy application making. It stands for Itzz Me\\'s Basic Language, and it is pronounced (im-ble).
+IMBL is a strongly typed imperative language aiming for easy application making. It stands for Itzz Me\'s Basic Language, and it is pronounced (im-ble).
 
 ### Goals and Ideas
-I want to make this an easy experience, but I also want to follow in the lead of mainstream langauges. While the language will not be OO (Object Oriented), I still need to think if I should have those constructs as an optional part of IMBL. I probably won\\'t be able to do much other than specification, since I\\'m not a good enough programmer to implement a programming language yet.
+I want to make this an easy experience, but I also want to follow in the lead of mainstream langauges. While the language will not be OO (Object Oriented), I still need to think if I should have those constructs as an optional part of IMBL. I probably won\'t be able to do much other than specification, since I\'m not a good enough programmer to implement a programming language yet.
 
-Here\\'s a wackier idea, which is that IMBL is implemented on .NET, which honestly I\\'m not sure how you\\'d do that. ~~JVM?~~
+Here\'s a wackier idea, which is that IMBL is implemented on .NET, which honestly I\'m not sure how you\'d do that. ~~JVM?~~
 
 ### Examples
 
