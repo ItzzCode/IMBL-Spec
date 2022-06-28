@@ -12,6 +12,7 @@ Feel free to make a pull request to the spec, and make sure you explain why you 
 
 * Index of Contents
 * Goals and Ideas
+* Implementation
 * Changelog
 * Examples
 * Types
@@ -29,7 +30,15 @@ Feel free to make a pull request to the spec, and make sure you explain why you 
 
 I want to make this an easy experience, but I also want to follow in the lead of mainstream langauges. While the language will not be OO (Object Oriented), I still need to think if I should have those constructs as an optional part of IMBL. I probably won\'t be able to do much other than specification, since I\'m not a good enough programmer to implement a programming language yet.
 
-For implementation, I might have it on LLVM for compiling, although there's always the chance that it's interpreted.
+### Implementation
+
+I wanna use C# to implement it because it's what I know. I think ill get it hooked up to the LLVM backend if its compiled, but it can be interpreted initialy. Feel free to implement or to give tips on how to.
+
+Thinking:
+
+* Lexer
+* Parser
+* LLVM
 
 ### Changelog
 
