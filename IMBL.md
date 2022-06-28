@@ -6,6 +6,8 @@
 
 IMBL is a strongly typed imperative language aiming for easy application making. It stands for Itzz Me\'s Basic Language, and it is pronounced (im-ble).
 
+Feel free to make a pull request to the spec, and make sure you explain why you changed what you did!
+
 ### Index of Contents
 
 * Index of Contents
