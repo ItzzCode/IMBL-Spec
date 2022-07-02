@@ -1,6 +1,8 @@
 # IMBL Specification
 
-## Version 0.0.1 DRAFT
+ ***Version 0.0.2 DRAFT***
+
+ ---
 
 *This might change at any moment!*
 
@@ -8,7 +10,7 @@ IMBL is a strongly typed imperative language aiming for easy application making.
 
 Feel free to make a pull request to the spec, and make sure you explain why you changed what you did!
 
-### Index of Contents
+## Index of Contents
 
 * Index of Contents
 * Goals and Ideas
@@ -18,19 +20,21 @@ Feel free to make a pull request to the spec, and make sure you explain why you 
 * Types
 * Syntax and that
 * Variables
+* Arrays and Dictionaries
 * Flow Control
   * Conditionals
   * Loops
+* Functions
 * Errors
 * Graphics
 * Garbage Collection
 * The Standard Library
 
-### Goals and Ideas
+## Goals and Ideas
 
 I want to make this an easy experience, but I also want to follow in the lead of mainstream langauges. While the language will not be OO (Object Oriented), I still need to think if I should have those constructs as an optional part of IMBL. I probably won\'t be able to do much other than specification, since I\'m not a good enough programmer to implement a programming language yet.
 
-### Implementation
+## Implementation
 
 [Implementation Repo](https://github.com/ItzzCode/IMBL), not finished.
 
@@ -42,7 +46,7 @@ Thinking:
 * Parser
 * LLVM
 
-### Changelog
+## Changelog
 
 0.0.1
 
@@ -52,7 +56,14 @@ Thinking:
 * Cleaned up some stuff
 * `any` type added
 
-### Examples
+0.0.2
+
+* `any` is gone, use `auto` for type inference and overloads in functions
+* arrays and dictionaries added
+* actual function spec
+* `throw` added
+
+## Examples
 
 Hello, World!
 
@@ -145,7 +156,7 @@ namespace Program {
 }
 ```
 
-### Types
+## Types
 
 * Signed Integers
   * int (Int32)
@@ -170,10 +181,10 @@ namespace Program {
 * Other
   * bool (true / false)
   * null
-  * any
-    * This is usually not a good idea.
+  * auto
+    * This is for type inference on declaration of a variable. Usually you already know what type to use though.
 
-### Syntax and that
+## Syntax and that
 
 Take the hello world example from earlier.
 
@@ -191,7 +202,7 @@ First, we include the stdio namespace from std, which allows us to call `printLi
 
 ***Note that this langauge requires a `;` at the ends of expressions and function calls. The line will not end until you end it with a `;`.***
 
-### Variables
+## Variables
 
 You can declare a variable by typing its type, its name, and optionally its value. If you use a variable which has been declared, but has no value, you get an error.
 
@@ -239,11 +250,79 @@ namespace Program {
 }
 ```
 
-While not recommended, you can do type inference with the `any` type. The variable must be declared or it will throw an error (ErrorVariableUndefined).
+While not recommended, you can do type inference on declaration with the `auto` type. The variable must be declared or it will throw an error (ErrorVariableUndefined).
 
-### Flow Control
+## Arrays and Dictionaries
 
-#### Conditionals
+Arrays can be declared like this:
+
+```IMBL
+from <std> include <stdio>
+
+namespace Program {
+    null Main() {
+        int[] potato = {1, 2, 3, 5, 4};
+    }
+}
+```
+
+And accessed like this:
+
+```IMBL
+from <std> include <stdio>
+
+namespace Program {
+    null Main() {
+        int[] potato = {1, 2, 3, 5, 4};
+
+        // 0-Indexed
+        // Prints 1
+        printLine(potato[0]);
+    }
+}
+```
+
+Assigned to like this:
+
+```IMBL
+from <std> include <stdio>
+
+namespace Program {
+    null Main() {
+        int[] potato = {1, 2, 3, 5, 4};
+
+        potato[0] = 4;
+
+        // 0-Indexed
+        // Prints 4
+        printLine(potato[0]);
+    }
+}
+```
+
+There's also dictionaries, where the index is replaced with a string, named the key. If you have no name for the key, you can mark it null. You can now only access it with a normal index.
+
+Example:
+
+```IMBL
+from <std> include <stdio>
+
+namespace Program {
+    null Main() {
+        int[] potato = {"sus" => 1, "impostor" => 2, null => 3, "Example" => 5, null: 4};
+
+        potato["Example"] = 4;
+
+        // 0-Indexed
+        // Prints 4
+        printLine(potato["Example"]);
+    }
+}
+```
+
+## Flow Control
+
+### Conditionals
 
 An `if` statement can be used to choose certain code paths if a boolean condition is met. `elif` lets you make another comparasion if the first one was not met, and `else` is used when no condition matches.
 
@@ -310,7 +389,7 @@ namespace Program {
 }
 ```
 
-#### Loops
+### Loops
 
 The `for` loop takes in 3 expressions. The first expression is for initializing variables. The second is a condition, which if true continues the for loop. The final expression updates the variables.
 
@@ -340,9 +419,65 @@ namespace Program {
 }
 ```
 
-### Errors
+## Functions
 
-Sometimes something goes wrong, and an error is thrown. An unhandled error will cause execution to stop, so make sure to remove the posibity of an error, or you can also use `try{}` to catch errors at runtime and let the program continue.
+Functions are pieces of code that when called do a thing. They are declared as such:
+
+`type name( args ){ body }`
+
+One example of an important function is the `Main()` function, which returns null ( basically nothing ) and is the start point of the program.
+
+Functions with a return type must explicitly return a value, no matter what.
+
+```IMBL
+from <std> include <stdio>;
+
+namespace Program {
+    int randomFunction() {
+        return 93;
+    }
+
+    null Main() {
+        printLine(randomFunction());
+    }
+}
+```
+
+You can pass arguements with types into functions like this:
+
+```IMBL
+from <std> include <stdio>;
+
+namespace Program {
+    int randomFunctionNo2( int a, int b ) {
+        return a + b;
+    }
+
+    null Main() {
+        printLine(randomFunction(3, 1));
+    }
+}
+```
+
+You can mark a function as pure ( no side effects ), and it will throw an error if you give it side effects.
+
+```IMBL
+from <std> include <stdio>;
+
+namespace Program {
+    pure int randomFunction( int x ) {
+        return x + 1;
+    }
+
+    null Main() {
+        printLine(randomFunction( 26 ));
+    }
+}
+```
+
+## Errors
+
+Sometimes something goes wrong, and an error is thrown. An unhandled error will cause execution to stop, so make sure to remove the posibity of an error, or you can also use `try{}` to catch errors at runtime and let the program continue. You can also manually throw an error like this `throw "[ErrorName]";`.
 
 Here's the error syntax:
 
@@ -352,6 +487,8 @@ ERROR! [Error], Line [Number]; [Error Description].
 
 Here's a list of errors that may happen.
 
+* ErrorGeneric
+  * There has been an error.
 * ErrorVariableUndefined
   * [Variable] has no value yet.
 * ErrorVariableUndeclared
@@ -364,8 +501,16 @@ Here's a list of errors that may happen.
   * Cannot convert from [Type1] to [Type2].
 * ErrorMismatchedTypes
   * Cannot use [Type1] on [Type2].
+* ErrorOutOfBoundsIndex
+  * Index [Index] is out of the bounds of the array.
+* ErrorKeyNotFound
+  * Key [Key] is not in the dictionary.
+* ErrorMismatchedBraces
+  * [Brace / Parenthesis ] was never closed.
+* ErrorInvalidSyntax
+  * Invalid Syntax.
 
-### Graphics
+## Graphics
 
 Not real yet. Although here's some things I'm thinking of.
 
@@ -381,7 +526,7 @@ include <gfx>;
 // gfx searches for funcs here
 namespace gfxHandling {
     /* 
-        leaving here
+        leaving input here
         if it is defined in gfxStart(), then it isnt accessible in gfxStep()
         if it is defined in gfxStep(), its gonna be declared repeatedly
     */
@@ -444,7 +589,7 @@ namespace Program {
 }
 ```
 
-### Garbage Colelction
+## Garbage Colelction
 
 Automatic. Variables are deleted at the end of the scope scope they are declared in. You can also delete a variable manually like this:
 
@@ -454,28 +599,107 @@ delete [variable]
 
 Where `[Variable]` is the variable. Obviously.
 
-### The Standard Library
+## The Standard Library
 
 Also known as `std` (Nailuj, not what you're thinking), this contains some useful functions to help programmers code easier.
 
 `std` is stored in a single namspace, which itself also contains several other namespaces.
 
-* `namespace stdio`
-  * `null print( any input )`
-    * Prints input to stdout
-  * `null printLine( any input )`
-    * Prints input with newline to stdout
-  * `string? readLine( string prompt = "" )`
-    * Reads from stdin, optionally displays a prompt.
+### In: `namespace stdio`
 
-* `namespace converts`
-  * `string toString( any input )`
-    * Converts any valid inputs to `string`. Throws  ErrorBadConversion if it cannot.
-  * `string toString( any input )`
-    * Converts any valid inputs to `char`. Throws  ErrorBadConversion if it cannot.
-  * `int toInt( any input )`
-    * Converts any valid inputs to `int`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
-  * `float toFloat( any input )`
-    * Converts any valid inputs to `float`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
-  * `double toDouble( any input )`
-    * Converts any valid inputs to `double`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
+---
+
+```IMBL
+null print( int input )
+null print( string input )
+null print( char input )
+null print( float input )
+null print( double input )
+null print( bool input )
+```
+
+Prints input to stdout.
+
+---
+
+```IMBL
+null printLine( int input )
+null printLine( string input )
+null printLine( char input )
+null printLine( float input )
+null printLine( double input )
+null printLine( bool input )
+```
+
+Prints input with newline to stdout.
+
+---
+
+`string? readLine( string prompt = "" )`
+
+Reads from stdin, optionally displays a prompt.
+
+---
+
+### In: `namespace converts`
+
+---
+
+```IMBL
+string toString( int input )
+string toString( string input )
+string toString( char input )
+string toString( float input )
+string toString( double input )
+string toString( bool input )
+```
+
+Converts any valid inputs to `string`. Throws  ErrorBadConversion if it cannot.
+
+---
+
+```IMBL
+char toChar( int input )
+char toChar( string input )
+char toChar( char input )
+```
+
+Converts any valid inputs to `char`. Throws  ErrorBadConversion if it cannot.
+
+---
+
+```IMBL
+int toInt( int input )
+int toInt( string input )
+int toInt( float input )
+int toInt( double input )
+int toInt( bool input )
+```
+
+Converts any valid inputs to `int`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
+
+---
+
+```IMBL
+float toFloat( int input )
+float toFloat( string input )
+float toFloat( float input )
+float toFloat( double input )
+float toFloat( bool input )
+```
+
+Converts any valid inputs to `float`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
+
+---
+
+```IMBL
+double toDouble( int input )
+double toDouble( string input )
+double toDouble( float input )
+double toDouble( double input )
+double toDouble( bool input )
+```
+
+Converts any valid inputs to `double`. Throws  ErrorBadConversion if it cannot (not an number, or too big/small).
+
+---
